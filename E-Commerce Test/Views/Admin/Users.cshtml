@@ -1,0 +1,68 @@
+﻿@model IEnumerable<E_Commerce_Test.ViewModels.UserViewModel>
+
+@{
+    ViewBag.pageTitle = "User Management";
+    ViewBag.CardTitle = "View Users";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="mb-3">
+        <a href="@Url.Action("CreateUser", "Admin")" class="btn btn-primary">Create User</a>
+    </div>
+
+    <div class="table-responsive">
+        <table id="userTable" class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.Full_Name</td>
+                        <td>@user.City</td>
+                        <td>@user.Address</td>
+                        <td>@user.Role</td>
+                        <td>
+                            @if (user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow)
+                            {
+                                <a asp-action="UnlockUser" asp-route-id="@user.Id" class="btn btn-success btn-sm">Unlock</a>
+                            }
+                            else
+                            {
+                                <a asp-action="LockUser" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Lock</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                "paging": true,
+                "pageLength": 5,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false
+            });
+        });
+    </script>
+}

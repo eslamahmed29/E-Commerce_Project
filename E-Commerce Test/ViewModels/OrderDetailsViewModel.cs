@@ -1,0 +1,10 @@
+﻿namespace E_Commerce_Test.ViewModels
+{
+    public class OrderDetailsViewModel
+    {
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+}

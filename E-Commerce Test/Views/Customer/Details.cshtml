@@ -1,0 +1,90 @@
+﻿@model E_Commerce_Test.Models.Dtos.ProductsDtos.GetProductDto
+
+@{
+    ViewBag.Title = "Product Details";
+    Layout = "~/Views/Shared/_Customer_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">@Model.Name</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" />
+            }
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">@Html.Raw(Model.Description)</p>
+                    <p class="card-text"><strong>Price:</strong> <span class="text-primary">@Model.Price.ToString("C")</span></p>
+                    <p class="card-text"><strong>Category:</strong> @Model.CategoryName</p>
+                    @if (Model.UnitsInStock > 0)
+                    {
+                        <form asp-controller="Customer" asp-action="AddToCart" method="post" class="mt-4">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-success btn-block">Add to Cart</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <p class="text-danger text-center mt-4">Out of Stock</p>
+                        <button class="btn btn-outline-secondary btn-block mt-2" disabled>Add to Cart</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="@Url.Action("Index")" class="btn btn-outline-primary"><i class="bi bi-arrow-left"></i> Back to List</a>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .container {
+            max-width: 800px;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+
+        .card-body {
+            font-size: 1.1rem;
+        }
+
+        .btn-outline-success {
+            border-color: #28a745;
+            color: #28a745;
+        }
+
+            .btn-outline-success:hover {
+                background-color: #28a745;
+                color: white;
+            }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #007bff;
+                color: white;
+            }
+
+        .btn-outline-secondary {
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+        .img-fluid {
+            max-height: 400px;
+            object-fit: cover;
+        }
+    </style>
+}

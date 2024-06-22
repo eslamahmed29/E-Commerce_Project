@@ -1,0 +1,49 @@
+﻿@model IEnumerable<E_Commerce_Test.Models.Models.OrderHeader>
+
+@{
+    ViewData["Title"] = "Order List";
+    Layout = "~/Views/Shared/_Customer_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+    <div class="row">
+        @foreach (var order in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">Order Date: @order.OrderDate.ToString("MM/dd/yyyy hh:mm tt")</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Total:</strong> @order.OrderTotal.ToString("C")</p>
+                        <p class="card-text"><strong>Billing Address:</strong> @order.BillingAddress</p>
+                        <p class="card-text"><strong>Shipping Address:</strong> @order.ShippingAddress</p>
+                        <p class="card-text"><strong>Tracking Number:</strong> @order.TrackingNumber</p>
+                        <p class="card-text"><strong>Order Status:</strong> @order.OrderStatus</p>
+                        <a href="@Url.Action("Details", new { id = order.Id })" class="btn btn-primary btn-sm">View</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-bottom: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body {
+            border-top: 1px solid #ddd;
+        }
+    </style>
+}

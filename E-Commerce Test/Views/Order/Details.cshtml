@@ -1,0 +1,84 @@
+﻿@model E_Commerce_Test.ViewModels.OrderDetailViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "~/Views/Shared/_Customer_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Order @Model.OrderHeader.Id</h2>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Order Date</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.OrderDate.ToString("MM/dd/yyyy hh:mm tt")</dd>
+                <dt class="col-sm-3">Total</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.OrderTotal.ToString("C")</dd>
+                <dt class="col-sm-3">Billing Address</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.BillingAddress</dd>
+                <dt class="col-sm-3">Shipping Address</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.ShippingAddress</dd>
+                <dt class="col-sm-3">Tracking Number</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.TrackingNumber</dd>
+                <dt class="col-sm-3">Order Status</dt>
+                <dd class="col-sm-9">@Model.OrderHeader.OrderStatus</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Order Items</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderDetails)
+                        {
+                            var subtotal = item.Price * item.Quantity;
+                            <tr>
+                                <td>@item.Product.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price.ToString("C")</td>
+                                <td>@subtotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .container {
+            max-width: 1000px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .table-responsive {
+            margin-top: 20px;
+        }
+    </style>
+}

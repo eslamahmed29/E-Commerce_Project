@@ -1,0 +1,137 @@
+﻿@model IEnumerable<E_Commerce_Test.ViewModels.ShoppingCartViewModel>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    Layout = "~/Views/Shared/_Customer_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center">@ViewData["Title"]</h1>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="@item.ProductImage" alt="@item.ProductName" style="width: 50px; height: 50px; object-fit: cover;" class="mr-3" />
+                                <div>@item.ProductName</div>
+                            </div>
+                        </td>
+                        <td>
+                            <form asp-action="UpdateCart" method="post" class="form-inline">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <input type="hidden" name="ProductId" value="@item.ProductId" />
+                                <input type="hidden" name="AppUserId" value="@item.AppUserId" />
+                                <input type="number" name="Quantity" value="@item.Quantity" class="form-control" style="width: 80px;" min="1" />
+                                <button type="submit" class="btn btn-primary ml-2">Update</button>
+                            </form>
+                        </td>
+                        @{
+                            var subtotal = item.Price * item.Quantity;
+                        }
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@subtotal.ToString("C")</td>
+                        <td>
+                            <form asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="Id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4">
+        <h3>Total: @Model.Sum(item => item.Price * item.Quantity).ToString("C")</h3>
+        <div>
+            
+            <form asp-controller="Order" asp-action="CreateOrder" method="get" style="display: inline;">
+                <button type="submit" class="btn btn-success">Proceed to Checkout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .container {
+            max-width: 1000px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #004085;
+            }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                border-color: #bd2130;
+            }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                border-color: #1e7e34;
+            }
+
+        .table img {
+            border-radius: 5px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+}
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('form').forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                var input = form.querySelector('input[type="number"]');
+                if (input.value < 1) {
+                    input.value = 1; // Correct the value
+                    alert('Quantity cannot be less than 1');
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+    });
+</script>

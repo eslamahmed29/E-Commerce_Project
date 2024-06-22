@@ -1,0 +1,69 @@
+﻿@model E_Commerce_Test.Models.Dtos.ProductsDtos.PostProductDto
+
+@{
+    ViewBag.pageTitle = "Product Management";
+    ViewBag.CardTitle = "Edit Product";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Edit Product</h2>
+    <hr />
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="CurrentImageUrl" />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UnitsInStock" class="control-label"></label>
+            <input asp-for="UnitsInStock" class="form-control" />
+            <span asp-validation-for="UnitsInStock" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="control-label"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId" class="control-label"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Image" class="control-label"></label>
+            <input asp-for="Image" type="file" class="form-control" onchange="previewImage(event)" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+            <img id="imagePreview" src="@Model.CurrentImageUrl" alt="Current Image" style="max-width: 200px; margin-top: 10px;" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+    <div>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript">
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+}

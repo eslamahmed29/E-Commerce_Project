@@ -1,0 +1,65 @@
+﻿@model E_Commerce_Test.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-body h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.card-footer {
+    background: none;
+    border-top: none;
+}
+</style>
+
+<div class="container">
+    <h1 class="display-4 text-center">Welcome</h1>
+    <div class="row mt-4">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h3>@Model.ProductCount</h3>
+                    <p>Products</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Index", "Product")" class="text-white">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h3>@Model.PendingOrdersCount</h3>
+                    <p>Pending Orders</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Orders", "Admin")" class="text-white">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h3>@Model.UserCount</h3>
+                    <p>Users</p>
+                </div>
+                <div class="card-footer">
+                    <a href="@Url.Action("Users", "Admin")" class="text-white">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+}

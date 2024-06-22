@@ -1,0 +1,12 @@
+﻿@{
+   var isAdmin = User.IsInRole("Admin");
+   if (isAdmin)
+   {
+      Layout = "Dashboard";
+   }
+   else
+   {
+      Layout = "_Customer_Layout";
+   }
+
+}

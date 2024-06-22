@@ -1,0 +1,166 @@
+﻿@model E_Commerce_Test.ViewModels.OrderViewModel
+
+@{
+    ViewData["Title"] = "Create Order";
+    Layout = "~/Views/Shared/_Customer_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+
+    <form asp-action="CreateOrder" method="post" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Billing Details</h3>
+                <div class="form-group">
+                    <label asp-for="BillingAddress" class="control-label"></label>
+                    <input asp-for="BillingAddress" class="form-control" required />
+                    <span asp-validation-for="BillingAddress" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide a valid billing address.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ShippingAddress" class="control-label"></label>
+                    <input asp-for="ShippingAddress" class="form-control" required />
+                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide a valid shipping address.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3>Payment Details</h3>
+                <div class="form-group">
+                    <label asp-for="PaymentDetails.CardHolderName" class="control-label"></label>
+                    <input asp-for="PaymentDetails.CardHolderName" class="form-control" required />
+                    <span asp-validation-for="PaymentDetails.CardHolderName" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide the cardholder's name.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentDetails.CardNumber" class="control-label"></label>
+                    <input asp-for="PaymentDetails.CardNumber" class="form-control" required />
+                    <span asp-validation-for="PaymentDetails.CardNumber" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide a valid card number.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentDetails.Expiration" class="control-label"></label>
+                    <input asp-for="PaymentDetails.Expiration" class="form-control" required />
+                    <span asp-validation-for="PaymentDetails.Expiration" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide the card's expiration date.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PaymentDetails.CVV" class="control-label"></label>
+                    <input asp-for="PaymentDetails.CVV" class="form-control" required />
+                    <span asp-validation-for="PaymentDetails.CVV" class="text-danger"></span>
+                    <div class="invalid-feedback">
+                        Please provide the card's CVV.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h3>Order Summary</h3>
+                @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                var subtotal = item.Price * item.Quantity;
+                                <tr>
+                                    <td>@item.ProductName</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price.ToString("C")</td>
+                                    <td>@subtotal.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <h3 class="text-right">Total: @Model.OrderTotal.ToString("C")</h3>
+                }
+                else
+                {
+                    <p>No items in the order.</p>
+                }
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg">Submit Order</button>
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    <style>
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-lg {
+            padding: .5rem 1.5rem;
+            font-size: 1.25rem;
+            border-radius: .3rem;
+        }
+
+        .needs-validation .form-control:invalid {
+            border-color: #dc3545;
+        }
+
+        .invalid-feedback {
+            display: none;
+            width: 100%;
+            margin-top: .25rem;
+            font-size: 80%;
+            color: #dc3545;
+        }
+
+        .form-control:invalid ~ .invalid-feedback {
+            display: block;
+        }
+
+        .table {
+            margin-top: 2rem;
+        }
+
+            .table th, .table td {
+                vertical-align: middle;
+            }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            'use strict';
+            window.addEventListener('load', function () {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+}

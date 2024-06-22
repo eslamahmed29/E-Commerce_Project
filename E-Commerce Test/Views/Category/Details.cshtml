@@ -1,0 +1,32 @@
+﻿@model E_Commerce_Test.Models.Dtos.CategoriesDtos.GetCategoryDto
+
+@{
+    ViewBag.pageTitle = "Category Management";
+    ViewBag.CardTitle = "View Category Details";
+    Layout = "~/Views/Shared/Dashboard.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.CardTitle</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CategoryName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.CategoryName)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+            <dd class="col-sm-9">@Model.CreatedDate.ToString("MM/dd/yyyy")</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ProductCount)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ProductCount)</dd>
+        </dl>
+        <div class="d-flex justify-content-between">
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">Edit</a>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
